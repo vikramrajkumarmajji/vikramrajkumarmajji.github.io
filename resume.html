@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Vikram Raj Kumar Majji | Cybersecurity Specialist</title>
+<style>
+/*══════════════════════════════════════════════════════════
+  ROOT & RESET
+══════════════════════════════════════════════════════════*/
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#040810;--surface:#080f1e;--card:#0c1628;--card2:#0f1e35;
+  --accent:#00f5ff;--accent2:#7c3aed;--accent3:#10b981;--warn:#f59e0b;--danger:#ef4444;
+  --text:#e2e8f0;--muted:#4a6080;--border:#1a2840;
+  --glow:0 0 25px rgba(0,245,255,.4);--glow2:0 0 25px rgba(124,58,237,.4);--glow3:0 0 25px rgba(16,185,129,.4);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;overflow-x:hidden;cursor:none}
+
+/*══════════════════════════════════════════════════════════
+  CUSTOM CURSOR
+══════════════════════════════════════════════════════════*/
+#cursor{position:fixed;width:12px;height:12px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s,background .2s;box-shadow:var(--glow)}
+#cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid rgba(0,245,255,.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .12s ease;animation:ring-pulse 2s ease infinite}
+@keyframes ring-pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,245,255,.3)}50%{box-shadow:0 0 0 8px rgba(0,245,255,0)}}
+body:has(a:hover) #cursor,body:has(button:hover) #cursor{transform:translate(-50%,-50%) scale(2.5);background:var(--accent2)}
+body:has(a:hover) #cursor-ring,body:has(button:hover) #cursor-ring{transform:translate(-50%,-50%) scale(1.6);opacity:0}
+
+/*══════════════════════════════════════════════════════════
+  BACKGROUND LAYERS
+══════════════════════════════════════════════════════════*/
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+#hex-grid{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.06}
+.spotlight{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(circle 400px at var(--mx,50%) var(--my,50%),rgba(0,245,255,.04) 0%,transparent 70%)}
+
+/*══════════════════════════════════════════════════════════
+  SCAN LINE OVERLAY
+══════════════════════════════════════════════════════════*/
+body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.06) 2px,rgba(0,0,0,.06) 4px);
+  animation:scanlines 8s linear infinite}
+@keyframes scanlines{0%{background-position:0 0}100%{background-position:0 100px}}
+
+/*══════════════════════════════════════════════════════════
+  NAVIGATION
+══════════════════════════════════════════════════════════*/
+nav{position:fixed;top:0;left:0;right:0;z-index:500;
+  background:rgba(4,8,16,.8);backdrop-filter:blur(20px) saturate(180%);
+  border-bottom:1px solid rgba(0,245,255,.08);padding:.7rem 2.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  animation:slideDown .8s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes slideDown{from{transform:translateY(-100%);opacity:0}to{transform:none;opacity:1}}
+
+.nav-brand{
+  font-size:1rem;font-weight:800;letter-spacing:.12em;
+  font-family:'Courier New',monospace;
+  background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent));
+  background-size:200%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  animation:grad-shift 4s linear infinite}
+@keyframes grad-shift{0%{background-position:0%}100%{background-position:200%}}
+
+.nav-links{display:flex;gap:1.8rem;list-style:none;align-items:center}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.78rem;
+  letter-spacing:.1em;text-transform:uppercase;position:relative;transition:color .3s}
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;
+  background:var(--accent);transition:width .3s}
+.nav-links a:hover{color:var(--accent)}
+.nav-links a:hover::after{width:100%}
+.nav-progress{position:absolute;bottom:0;left:0;height:1px;width:0%;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .1s}
+
+/*══════════════════════════════════════════════════════════
+  MAIN & SECTIONS
+══════════════════════════════════════════════════════════*/
+main{position:relative;z-index:2;padding-top:60px}
+section{padding:6rem 2rem;max-width:1120px;margin:0 auto}
+
+/*══════════════════════════════════════════════════════════
+  SECTION HEADERS
+══════════════════════════════════════════════════════════*/
+.sh{display:flex;align-items:center;gap:1.2rem;margin-bottom:3.5rem}
+.sh-icon{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;font-size:1.3rem;flex-shrink:0;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:var(--glow);
+  animation:icon-bob 3s ease infinite}
+@keyframes icon-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.sh h2{font-size:clamp(1.5rem,3vw,2rem);font-weight:900;letter-spacing:-.01em}
+.sh h2 .glitch{position:relative;display:inline-block}
+.sh h2 .glitch::before,.sh h2 .glitch::after{content:attr(data-text);position:absolute;left:0;top:0;opacity:0}
+.sh h2 .glitch:hover::before{opacity:.8;color:var(--accent);animation:glitch-a .4s steps(2,end) infinite;clip-path:polygon(0 0,100% 0,100% 35%,0 35%)}
+.sh h2 .glitch:hover::after{opacity:.6;color:var(--accent2);animation:glitch-b .4s steps(2,end) infinite;clip-path:polygon(0 65%,100% 65%,100% 100%,0 100%)}
+@keyframes glitch-a{0%{transform:translateX(-2px)}50%{transform:translateX(2px)}100%{transform:translateX(0)}}
+@keyframes glitch-b{0%{transform:translateX(2px)}50%{transform:translateX(-2px)}100%{transform:translateX(0)}}
+.sh-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(0,245,255,.3),transparent)}
+
+/*══════════════════════════════════════════════════════════
+  REVEAL ANIMATIONS
+══════════════════════════════════════════════════════════*/
+.reveal{opacity:0;transform:translateY(50px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+.reveal.left{transform:translateX(-50px)}
+.reveal.right{transform:translateX(50px)}
+.reveal.scale{transform:scale(.9)}
+.reveal.visible{opacity:1;transform:none}
+
+/*══════════════════════════════════════════════════════════
+  HERO
+══════════════════════════════════════════════════════════*/
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:5rem 2rem 3rem;position:relative}
+
+.status-badge{display:inline-flex;align-items:center;gap:.6rem;
+  background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);
+  border-radius:999px;padding:.4rem 1.2rem;font-size:.75rem;
+  color:var(--accent3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2rem;
+  animation:fadeUp .8s .2s both}
+.status-badge .pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--accent3);
+  box-shadow:0 0 10px var(--accent3);animation:pulse 1.5s ease infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.6);opacity:.5}}
+
+.hero-name{font-size:clamp(2.4rem,7vw,5.5rem);font-weight:900;line-height:1.05;letter-spacing:-.02em;
+  background:linear-gradient(135deg,#ffffff 0%,var(--accent) 40%,var(--accent2) 75%,#ffffff 100%);
+  background-size:300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  animation:fadeUp .8s .4s both,name-shimmer 5s 1.5s ease infinite}
+@keyframes name-shimmer{0%,100%{background-position:0%}50%{background-position:100%}}
+
+.hero-sub{font-size:clamp(.85rem,2vw,1.1rem);color:var(--accent);letter-spacing:.2em;
+  text-transform:uppercase;margin:.8rem 0 .4rem;font-family:'Courier New',monospace;
+  animation:fadeUp .8s .6s both}
+.hero-sub #typed{color:var(--accent)}
+.cursor-blink{display:inline-block;width:2px;height:1em;background:var(--accent);
+  vertical-align:text-bottom;animation:blink .65s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+
+.hero-location{color:var(--muted);font-size:.9rem;margin:1rem 0 2rem;
+  animation:fadeUp .8s .75s both}
+.hero-location span{color:var(--accent3);margin:0 .5rem}
+
+.hero-about{max-width:680px;color:#7a9ab8;line-height:1.85;font-size:.95rem;
+  margin-bottom:2.5rem;animation:fadeUp .8s .9s both;
+  border-left:2px solid rgba(0,245,255,.2);padding-left:1.2rem;text-align:left}
+
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeUp .8s 1.1s both}
+.btn{padding:.75rem 2rem;border-radius:10px;font-size:.88rem;font-weight:700;
+  text-decoration:none;letter-spacing:.06em;transition:all .3s;cursor:none;border:none;display:inline-block}
+.btn-glow{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;
+  box-shadow:0 0 30px rgba(0,245,255,.3),0 4px 20px rgba(0,0,0,.4)}
+.btn-glow:hover{transform:translateY(-4px) scale(1.04);box-shadow:0 0 50px rgba(0,245,255,.5),0 8px 30px rgba(0,0,0,.4)}
+.btn-ghost{background:transparent;color:var(--accent);border:1px solid rgba(0,245,255,.4);
+  backdrop-filter:blur(8px)}
+.btn-ghost:hover{background:rgba(0,245,255,.1);transform:translateY(-4px);box-shadow:var(--glow)}
+
+.hero-stats{display:flex;gap:0;margin-top:4rem;animation:fadeUp .8s 1.3s both;
+  border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--card)}
+.stat-cell{padding:1.5rem 2.5rem;text-align:center;position:relative;flex:1}
+.stat-cell+.stat-cell::before{content:'';position:absolute;left:0;top:20%;bottom:20%;width:1px;background:var(--border)}
+.stat-n{font-size:2.2rem;font-weight:900;font-family:'Courier New',monospace;
+  background:linear-gradient(135deg,var(--accent),var(--accent3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-l{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:.2rem}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+
+.scroll-indicator{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:.5rem;
+  animation:fadeUp .8s 1.8s both,scroll-bob 2s 3s ease infinite}
+@keyframes scroll-bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+.scroll-indicator .scroll-line{width:1px;height:40px;
+  background:linear-gradient(180deg,var(--accent),transparent);animation:scroll-fill 2s 3s ease infinite}
+@keyframes scroll-fill{0%,100%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.scroll-indicator span{font-size:.65rem;letter-spacing:.15em;color:var(--muted);text-transform:uppercase}
+
+/*══════════════════════════════════════════════════════════
+  TERMINAL SECTION
+══════════════════════════════════════════════════════════*/
+#terminal-section{padding:4rem 2rem;max-width:1120px;margin:0 auto}
+.terminal-wrap{background:#05090f;border:1px solid rgba(0,245,255,.15);border-radius:12px;overflow:hidden;
+  box-shadow:0 0 60px rgba(0,245,255,.05);position:relative}
+.terminal-header{background:#0a1220;padding:.7rem 1rem;display:flex;align-items:center;gap:.5rem;
+  border-bottom:1px solid var(--border)}
+.t-dot{width:12px;height:12px;border-radius:50%}
+.t-title{margin-left:.5rem;font-size:.8rem;color:var(--muted);font-family:'Courier New',monospace;flex:1;text-align:center}
+.terminal-body{padding:1.5rem;font-family:'Courier New',monospace;font-size:.85rem;min-height:220px;position:relative}
+.t-line{display:flex;gap:.5rem;margin-bottom:.3rem;opacity:0;animation:t-appear .05s forwards}
+@keyframes t-appear{to{opacity:1}}
+.t-prompt{color:var(--accent3)}
+.t-cmd{color:var(--accent)}
+.t-out{color:#94a3b8;padding-left:1.4rem}
+.t-success{color:var(--accent3)}
+.t-warn{color:var(--warn)}
+.t-cursor-term{display:inline-block;width:9px;height:15px;background:var(--accent);animation:blink .65s step-end infinite}
+
+/*══════════════════════════════════════════════════════════
+  EXPERIENCE TIMELINE
+══════════════════════════════════════════════════════════*/
+.timeline{position:relative;padding-left:2.5rem}
+.timeline::before{content:'';position:absolute;left:.6rem;top:0;bottom:0;width:2px;
+  background:linear-gradient(180deg,var(--accent) 0%,var(--accent2) 50%,var(--accent3) 100%)}
+
+.t-item{position:relative;margin-bottom:2rem}
+.t-item::before{content:'';position:absolute;left:-2.1rem;top:1.6rem;width:16px;height:16px;
+  border-radius:50%;background:var(--bg);border:2px solid var(--accent);
+  box-shadow:var(--glow);transition:all .3s;z-index:1}
+.t-item:hover::before{background:var(--accent);transform:scale(1.4)}
+
+.t-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.75rem;
+  position:relative;overflow:hidden;transition:all .35s cubic-bezier(.22,1,.36,1);
+  transform-style:preserve-3d}
+.t-card::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(0,245,255,.04),rgba(124,58,237,.04));
+  opacity:0;transition:opacity .3s}
+.t-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  transform:translateX(-100%);transition:transform .5s}
+.t-card:hover{border-color:rgba(0,245,255,.35);box-shadow:var(--glow),0 20px 60px rgba(0,0,0,.4);transform:translateY(-4px)}
+.t-card:hover::before{opacity:1}
+.t-card:hover::after{transform:translateX(100%)}
+
+.t-header{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.75rem;margin-bottom:1rem}
+.t-role{font-size:1.05rem;font-weight:800;color:var(--text)}
+.t-company{color:var(--accent);font-size:.88rem;font-weight:600;margin-top:.15rem}
+.t-date{background:rgba(0,245,255,.08);border:1px solid rgba(0,245,255,.2);
+  color:var(--accent);font-size:.72rem;padding:.3rem .9rem;border-radius:999px;
+  white-space:nowrap;align-self:flex-start;font-family:'Courier New',monospace}
+.t-current{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3);color:var(--accent3)}
+
+.t-bullets{list-style:none}
+.t-bullets li{position:relative;padding-left:1.4rem;color:#7a9ab8;font-size:.88rem;margin-bottom:.45rem;line-height:1.6}
+.t-bullets li::before{content:'>';position:absolute;left:0;color:var(--accent3);font-family:'Courier New',monospace}
+
+.t-badges{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem}
+.t-badge{background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.25);
+  color:#a78bfa;font-size:.7rem;padding:.18rem .6rem;border-radius:6px;letter-spacing:.04em}
+
+/*══════════════════════════════════════════════════════════
+  SKILL RADAR + TAGS
+══════════════════════════════════════════════════════════*/
+.skills-layout{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+@media(max-width:800px){.skills-layout{grid-template-columns:1fr}}
+
+.radar-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:2rem;
+  display:flex;flex-direction:column;align-items:center;gap:1rem}
+#radarCanvas{max-width:320px;width:100%}
+
+.skill-panels{display:flex;flex-direction:column;gap:1rem}
+.skill-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem;
+  transition:all .3s}
+.skill-panel:hover{border-color:rgba(124,58,237,.4);box-shadow:var(--glow2);transform:translateX(6px)}
+.sp-title{font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2);margin-bottom:.8rem;font-weight:700}
+.sp-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+.sp-tag{background:rgba(255,255,255,.04);border:1px solid var(--border);
+  color:#94a3b8;font-size:.74rem;padding:.22rem .65rem;border-radius:6px;
+  transition:all .25s;cursor:default}
+.sp-tag:hover{background:rgba(0,245,255,.12);border-color:var(--accent);color:var(--accent);transform:scale(1.05)}
+
+/*══════════════════════════════════════════════════════════
+  SKILL BARS (proficiency)
+══════════════════════════════════════════════════════════*/
+.skill-bars{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:2rem;margin-top:2rem}
+.bar-item{margin-bottom:1.2rem}
+.bar-header{display:flex;justify-content:space-between;margin-bottom:.4rem;font-size:.83rem}
+.bar-name{color:var(--text);font-weight:600}
+.bar-pct{color:var(--accent);font-family:'Courier New',monospace}
+.bar-track{height:6px;background:var(--border);border-radius:999px;overflow:hidden}
+.bar-fill{height:100%;border-radius:999px;width:0;transition:width 1.2s cubic-bezier(.22,1,.36,1)}
+.bar-fill.cyan{background:linear-gradient(90deg,var(--accent2),var(--accent))}
+.bar-fill.purple{background:linear-gradient(90deg,var(--accent2),#a78bfa)}
+.bar-fill.green{background:linear-gradient(90deg,var(--accent3),#34d399)}
+
+/*══════════════════════════════════════════════════════════
+  CERTIFICATIONS — 3D FLIP CARDS
+══════════════════════════════════════════════════════════*/
+.certs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.25rem}
+.cert-flip{height:130px;perspective:800px;cursor:none}
+.cert-inner{position:relative;width:100%;height:100%;transition:transform .6s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d}
+.cert-flip:hover .cert-inner{transform:rotateY(180deg)}
+.cert-face{position:absolute;inset:0;border-radius:12px;backface-visibility:hidden;
+  display:flex;align-items:center;gap:1rem;padding:1.25rem;
+  background:var(--card);border:1px solid var(--border)}
+.cert-back{transform:rotateY(180deg);background:linear-gradient(135deg,rgba(0,245,255,.08),rgba(124,58,237,.08));
+  border-color:rgba(0,245,255,.25);flex-direction:column;justify-content:center;align-items:flex-start;gap:.3rem}
+.cert-icon-wrap{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;
+  font-size:1.3rem;flex-shrink:0;background:linear-gradient(135deg,var(--accent3),#065f46)}
+.cert-name{font-weight:700;font-size:.88rem;color:var(--text)}
+.cert-org{font-size:.75rem;color:var(--muted);margin-top:.15rem}
+.cert-id-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.cert-id-val{font-size:.8rem;color:var(--accent);font-family:'Courier New',monospace}
+
+/*══════════════════════════════════════════════════════════
+  THREAT MAP / PROJECT CARD
+══════════════════════════════════════════════════════════*/
+.project-hero{background:var(--card);border:1px solid var(--border);border-radius:20px;
+  overflow:hidden;transition:all .4s;position:relative}
+.project-hero:hover{border-color:rgba(0,245,255,.35);box-shadow:var(--glow),0 30px 80px rgba(0,0,0,.5)}
+.project-canvas-wrap{height:220px;background:#020608;position:relative;overflow:hidden}
+#threatCanvas{width:100%;height:100%}
+.project-content{padding:2rem}
+.proj-tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.proj-tag{background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.3);
+  color:#a78bfa;font-size:.73rem;padding:.22rem .7rem;border-radius:999px}
+.project-hero h3{font-size:1.3rem;font-weight:800;margin-bottom:.75rem}
+.project-hero p{color:#7a9ab8;font-size:.9rem;line-height:1.75;margin-bottom:.75rem}
+.proj-link{display:inline-flex;align-items:center;gap:.5rem;color:var(--accent);
+  font-size:.85rem;text-decoration:none;border:1px solid rgba(0,245,255,.3);
+  padding:.5rem 1.2rem;border-radius:8px;transition:all .3s;margin-top:.5rem}
+.proj-link:hover{background:rgba(0,245,255,.08);box-shadow:var(--glow);transform:translateX(4px)}
+
+/*══════════════════════════════════════════════════════════
+  EDUCATION
+══════════════════════════════════════════════════════════*/
+.edu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem}
+.edu-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.75rem;
+  transition:all .35s;position:relative;overflow:hidden}
+.edu-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:conic-gradient(from 0deg,transparent 0%,rgba(124,58,237,.04) 50%,transparent 100%);
+  animation:edu-spin 8s linear infinite;opacity:0;transition:opacity .3s}
+.edu-card:hover::before{opacity:1}
+.edu-card:hover{border-color:rgba(124,58,237,.4);box-shadow:var(--glow2);transform:translateY(-5px)}
+@keyframes edu-spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.edu-deg{font-size:1rem;font-weight:800}
+.edu-field{color:var(--accent2);font-size:.85rem;margin:.25rem 0}
+.edu-school{color:var(--muted);font-size:.83rem}
+.edu-meta{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.85rem}
+.edu-badge{background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.25);
+  color:#a78bfa;font-size:.72rem;padding:.2rem .65rem;border-radius:6px}
+
+/*══════════════════════════════════════════════════════════
+  PUBLICATIONS
+══════════════════════════════════════════════════════════*/
+.pub-list{display:flex;flex-direction:column;gap:1rem}
+.pub-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;
+  display:flex;align-items:flex-start;gap:1rem;transition:all .3s}
+.pub-card:hover{border-color:rgba(16,185,129,.35);box-shadow:var(--glow3);transform:translateX(6px)}
+.pub-num{font-size:2rem;font-weight:900;color:rgba(0,245,255,.12);font-family:'Courier New',monospace;flex-shrink:0;line-height:1}
+.pub-title{font-weight:700;font-size:.92rem;margin-bottom:.35rem}
+.pub-journal{color:var(--muted);font-size:.78rem}
+
+/*══════════════════════════════════════════════════════════
+  CONTACT
+══════════════════════════════════════════════════════════*/
+#contact{text-align:center;position:relative}
+#contact::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 800px 400px at center,rgba(0,245,255,.04),transparent)}
+.contact-grid{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2.5rem}
+.c-link{display:flex;align-items:center;gap:.7rem;
+  background:var(--card);border:1px solid var(--border);
+  color:var(--text);text-decoration:none;padding:.85rem 1.75rem;
+  border-radius:12px;font-size:.88rem;transition:all .35s;position:relative;overflow:hidden}
+.c-link::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(0,245,255,.06),rgba(124,58,237,.06));
+  opacity:0;transition:opacity .3s}
+.c-link:hover{border-color:rgba(0,245,255,.4);color:var(--accent);box-shadow:var(--glow);transform:translateY(-4px)}
+.c-link:hover::before{opacity:1}
+.c-icon{font-size:1.1rem}
+
+/*══════════════════════════════════════════════════════════
+  FOOTER
+══════════════════════════════════════════════════════════*/
+footer{position:relative;z-index:2;text-align:center;padding:2rem;
+  border-top:1px solid var(--border);color:var(--muted);font-size:.78rem;
+  background:linear-gradient(180deg,transparent,rgba(0,245,255,.01))}
+footer span{color:var(--accent)}
+
+/*══════════════════════════════════════════════════════════
+  SCROLL TO TOP
+══════════════════════════════════════════════════════════*/
+#top-btn{position:fixed;bottom:2.5rem;right:2.5rem;z-index:400;
+  width:48px;height:48px;border-radius:50%;border:1px solid rgba(0,245,255,.3);
+  background:rgba(4,8,16,.8);backdrop-filter:blur(12px);
+  color:var(--accent);font-size:1.1rem;cursor:none;
+  display:none;place-items:center;transition:all .3s;box-shadow:var(--glow)}
+#top-btn:hover{background:rgba(0,245,255,.15);transform:translateY(-4px) scale(1.1)}
+
+/*══════════════════════════════════════════════════════════
+  LOADING SCREEN
+══════════════════════════════════════════════════════════*/
+#loader{position:fixed;inset:0;z-index:9999;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;
+  transition:opacity .8s,visibility .8s}
+#loader.done{opacity:0;visibility:hidden}
+.loader-bar-wrap{width:260px;height:2px;background:var(--border);border-radius:999px;overflow:hidden}
+.loader-bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));
+  animation:load-fill 1.8s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes load-fill{to{width:100%}}
+.loader-text{font-family:'Courier New',monospace;font-size:.78rem;color:var(--accent);letter-spacing:.1em}
+.loader-logo{font-size:1.8rem;font-weight:900;font-family:'Courier New',monospace;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:.1em}
+
+/*══════════════════════════════════════════════════════════
+  RESPONSIVE
+══════════════════════════════════════════════════════════*/
+@media(max-width:768px){
+  nav{padding:.7rem 1rem}
+  .nav-links{display:none}
+  section{padding:4rem 1rem}
+  .hero-stats{flex-direction:column;gap:0}
+  .stat-cell+.stat-cell::before{display:none}
+  .stat-cell{border-top:1px solid var(--border)}
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   ELITE 3D SECURITY EXPERIENCE
+═══════════════════════════════════════════════════════════ */
+#bg-canvas,#hex-grid{opacity:.22}
+#hero-section{max-width:none;position:relative;overflow:hidden;isolation:isolate}
+#hero{min-height:100svh;align-items:flex-start;text-align:left;padding:8rem max(2rem,calc((100vw - 1120px)/2)) 4rem;overflow:hidden}
+.hero-copy{width:min(670px,58vw);position:relative;z-index:5}
+.hero-name{max-width:760px;text-wrap:balance}
+.hero-btns{justify-content:flex-start}
+.hero-stats{position:relative;z-index:5;background:rgba(8,15,30,.72);backdrop-filter:blur(18px);box-shadow:0 24px 80px rgba(0,0,0,.36)}
+#cyber-scene{position:absolute;inset:0 0 0 38%;width:62%;height:100%;z-index:1;pointer-events:auto;touch-action:pan-y;cursor:crosshair}
+.scene-vignette{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(90deg,var(--bg) 0%,rgba(4,8,16,.93) 33%,rgba(4,8,16,.18) 64%,rgba(4,8,16,.35) 100%)}
+.scene-hud{position:absolute;right:max(2rem,calc((100vw - 1120px)/2));top:7rem;z-index:4;width:230px;pointer-events:none;font-family:'Courier New',monospace;color:var(--accent)}
+.scene-hud::before{content:'';position:absolute;inset:-12px;background:linear-gradient(135deg,rgba(0,245,255,.08),transparent);border-left:1px solid rgba(0,245,255,.4);clip-path:polygon(0 0,100% 0,100% 80%,88% 100%,0 100%)}
+.scene-hud>*{position:relative}.hud-kicker{font-size:.62rem;letter-spacing:.22em;color:var(--accent3);margin-bottom:.5rem}.hud-line{height:1px;background:linear-gradient(90deg,var(--accent),transparent);margin:.55rem 0}.hud-data{display:flex;justify-content:space-between;font-size:.64rem;color:#7a9ab8;margin:.3rem 0}.hud-data b{color:var(--text);font-weight:500}.scene-orbits{position:absolute;inset:0;z-index:4;pointer-events:none}.orbit-node{position:absolute;left:50%;top:50%;width:9px;height:9px;border:1px solid var(--accent);background:var(--bg);border-radius:50%;box-shadow:0 0 14px var(--accent);pointer-events:auto;transition:opacity .2s,box-shadow .2s;will-change:transform}.orbit-node::after{content:attr(data-label);position:absolute;left:16px;top:-7px;width:max-content;padding:.26rem .5rem;border:1px solid rgba(0,245,255,.2);background:rgba(4,8,16,.76);backdrop-filter:blur(8px);color:#90aeca;font:600 .6rem/1.2 'Courier New',monospace;letter-spacing:.1em;text-transform:uppercase}.orbit-node:hover{box-shadow:0 0 25px var(--accent),0 0 45px rgba(0,245,255,.3)}
+.scene-guide{position:absolute;right:max(2rem,calc((100vw - 1120px)/2));bottom:4rem;z-index:4;font:500 .62rem/1.4 'Courier New',monospace;letter-spacing:.12em;color:#66839e;text-transform:uppercase;pointer-events:none}.scene-guide span{color:var(--accent)}
+section:not(#hero-section),#terminal-section{perspective:1200px}
+.t-card,.skill-panel,.radar-wrap,.cert-card,.project-hero,.edu-card,.pub-card,.terminal-wrap{transform-style:preserve-3d;will-change:transform;backface-visibility:hidden}
+.t-card>* ,.skill-panel>* ,.radar-wrap>* ,.cert-card>* ,.project-hero>* ,.edu-card>* ,.pub-card>* ,.terminal-wrap>*{position:relative;transform:translateZ(12px)}
+.depth-grid{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.24;background-image:linear-gradient(rgba(0,245,255,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,255,.055) 1px,transparent 1px);background-size:54px 54px;transform:perspective(500px) rotateX(64deg) scale(2.2) translateY(32%);transform-origin:center bottom;mask-image:linear-gradient(to top,black,transparent 74%)}
+@media(max-width:900px){
+  #hero{align-items:center;text-align:center;padding:7.5rem 1rem 4rem;min-height:980px}
+  .hero-copy{width:min(680px,100%)}.hero-btns{justify-content:center}.hero-about{text-align:left;background:rgba(4,8,16,.56);backdrop-filter:blur(10px)}
+  #cyber-scene{inset:28% -28% 0 28%;width:100%;height:66%;opacity:.75}.scene-vignette{background:linear-gradient(180deg,var(--bg) 0%,rgba(4,8,16,.88) 34%,rgba(4,8,16,.2) 70%,var(--bg) 100%)}
+  .scene-hud{display:none}.scene-guide{right:1rem;bottom:1.5rem}.orbit-node::after{display:none}.hero-stats{margin-top:2.5rem;width:100%}
+}
+@media(max-width:540px){
+  #hero{min-height:1120px;justify-content:flex-start;padding-top:8.2rem}
+  .hero-name{font-size:2.65rem}.hero-location{line-height:2}.hero-stats{margin-top:13rem}
+  .scene-guide{display:none}#cyber-scene{inset:49% -34% 0 22%;width:112%;height:42%;opacity:.82}
+  .scene-vignette{background:linear-gradient(180deg,var(--bg) 0%,rgba(4,8,16,.9) 47%,rgba(4,8,16,.16) 69%,var(--bg) 91%)}
+  .scroll-indicator{display:none}#top-btn{right:1rem;bottom:1rem}
+}
+@media(hover:none){body,.btn{cursor:auto}#cursor,#cursor-ring{display:none}}
+@media(prefers-reduced-motion:reduce){#cyber-scene{pointer-events:none}.orbit-node{display:none}.depth-grid{display:none}}
+
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">VRK::SECURITY</div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+  <div class="loader-text" id="loader-msg">INITIALIZING SYSTEMS...</div>
+</div>
+
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- BG -->
+<div class="depth-grid"></div>
+<canvas id="bg-canvas"></canvas>
+<svg id="hex-grid" xmlns="http://www.w3.org/2000/svg"></svg>
+<div class="spotlight" id="spotlight"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">VRK // SECURITY</div>
+  <ul class="nav-links">
+    <li><a href="#hero-section">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#certifications">Certs</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-progress" id="nav-progress"></div>
+</nav>
+
+<main>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section id="hero-section" style="padding:0">
+<div id="hero">
+  <canvas id="cyber-scene" aria-label="Interactive three-dimensional cybersecurity network visualization"></canvas>
+  <div class="scene-vignette"></div>
+  <div class="scene-hud" aria-hidden="true">
+    <div class="hud-kicker">LIVE DEFENSE MATRIX</div>
+    <div class="hud-line"></div>
+    <div class="hud-data"><span>THREAT SURFACE</span><b>MONITORED</b></div>
+    <div class="hud-data"><span>CONTROL PLANE</span><b>HARDENED</b></div>
+    <div class="hud-data"><span>AI / LLM LAYER</span><b>ACTIVE</b></div>
+    <div class="hud-data"><span>TRUST STATUS</span><b>VERIFIED</b></div>
+  </div>
+  <div class="scene-orbits" aria-hidden="true">
+    <a class="orbit-node" data-label="Red Team" data-orbit="0" href="#experience"></a>
+    <a class="orbit-node" data-label="AI / LLM" data-orbit="1" href="#skills"></a>
+    <a class="orbit-node" data-label="Cloud" data-orbit="2" href="#certifications"></a>
+    <a class="orbit-node" data-label="VAPT" data-orbit="3" href="#projects"></a>
+  </div>
+  <div class="scene-guide"><span>MOVE</span> TO ROTATE &nbsp;·&nbsp; <span>SELECT</span> A NODE</div>
+  <div class="hero-copy">
+  <div class="status-badge"><span class="pulse-dot"></span>Available · Open to Opportunities</div>
+  <h1 class="hero-name">Vikram Raj Kumar Majji</h1>
+  <p class="hero-sub"><span id="typed"></span><span class="cursor-blink"></span></p>
+  <p class="hero-location">
+    📍 Bengaluru, India <span>·</span>
+    📞 +91-8333011699 <span>·</span>
+    ✉️ hello.cyberdefender@gmail.com
+  </p>
+  <p class="hero-about">
+    Cybersecurity Specialist with <strong style="color:var(--accent)">5 years</strong> of experience across Red Teaming, VAPT, AI/LLM Security, Cloud Security, and Application Security. Delivered <strong style="color:var(--accent)">200+ VAPT assessments</strong> across enterprise applications — identifying critical vulnerabilities and driving remediation at scale. Hands-on with Burp Suite Pro, Metasploit, AWS, Azure, SAST/DAST/IAST, and AI-assisted security testing.
+  </p>
+  <div class="hero-btns">
+    <a href="#experience" class="btn btn-glow">View Experience →</a>
+    <a href="#contact" class="btn btn-ghost">Contact Me</a>
+  </div>
+  </div>
+  <div class="hero-stats reveal scale">
+    <div class="stat-cell"><div class="stat-n" data-target="5" data-suffix="+">0</div><div class="stat-l">Years Exp.</div></div>
+    <div class="stat-cell"><div class="stat-n" data-target="200" data-suffix="+">0</div><div class="stat-l">VAPTs Done</div></div>
+    <div class="stat-cell"><div class="stat-n" data-target="12" data-suffix="">0</div><div class="stat-l">Enterprise Products</div></div>
+    <div class="stat-cell"><div class="stat-n" data-target="45" data-suffix="%">0</div><div class="stat-l">Vuln Reduction</div></div>
+  </div>
+  <div class="scroll-indicator">
+    <span>scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════ TERMINAL ═══════════════ -->
+<div id="terminal-section">
+  <div class="terminal-wrap reveal">
+    <div class="terminal-header">
+      <div class="t-dot" style="background:#ef4444"></div>
+      <div class="t-dot" style="background:#f59e0b"></div>
+      <div class="t-dot" style="background:#10b981"></div>
+      <span class="t-title">vikram@cyberdefender:~$</span>
+    </div>
+    <div class="terminal-body" id="term-body">
+      <span class="t-cursor-term" id="t-cur"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ EXPERIENCE ═══════════════ -->
+<section id="experience">
+  <div class="sh reveal">
+    <div class="sh-icon">💼</div>
+    <h2><span class="glitch" data-text="Professional Experience">Professional Experience</span></h2>
+    <div class="sh-line"></div>
+  </div>
+  <div class="timeline">
+
+    <div class="t-item reveal left">
+      <div class="t-card">
+        <div class="t-header">
+          <div>
+            <div class="t-role">Senior Analyst — Technology Security</div>
+            <div class="t-company">Vendavo · Bangalore, Remote</div>
+          </div>
+          <span class="t-date t-current">⬤ June 2025 – Present</span>
+        </div>
+        <ul class="t-bullets">
+          <li>Owned VAPT for 12 enterprise products — end-to-end security assessments across application, API, cloud, and infrastructure attack surfaces.</li>
+          <li>Applied AI-driven security analysis to accelerate vulnerability identification and prioritization, combining automated findings with manual offensive-security validation.</li>
+          <li>Delivered a full AI application security assessment in under 4 hours — LLM attack-surface analysis, enterprise threat modeling, vulnerability validation, risk classification, and executive/technical pentest report.</li>
+          <li>Conducted Dark Web & Deep Web threat intelligence monitoring to track compromised credentials, leaked corporate data, exposed secrets, and threat-actor activity.</li>
+        </ul>
+        <div class="t-badges">
+          <span class="t-badge">AI/LLM Security</span>
+          <span class="t-badge">VAPT</span>
+          <span class="t-badge">Threat Intelligence</span>
+          <span class="t-badge">Cloud Security</span>
+          <span class="t-badge">Dark Web</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="t-item reveal left">
+      <div class="t-card">
+        <div class="t-header">
+          <div>
+            <div class="t-role">Cybersecurity Specialist</div>
+            <div class="t-company">Bcits Pvt Ltd · Bangalore</div>
+          </div>
+          <span class="t-date">July 2024 – June 2025</span>
+        </div>
+        <ul class="t-bullets">
+          <li>Red Team focused — performed black-box, gray-box, and white-box testing across web applications at different SDLC stages.</li>
+          <li>Designed and executed sophisticated penetration testing strategies, reducing exploitable vulnerabilities by <strong style="color:var(--accent)">45%</strong>.</li>
+        </ul>
+        <div class="t-badges">
+          <span class="t-badge">Red Teaming</span>
+          <span class="t-badge">Web App Pentest</span>
+          <span class="t-badge">Black-box / White-box</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="t-item reveal left">
+      <div class="t-card">
+        <div class="t-header">
+          <div>
+            <div class="t-role">Cybersecurity Specialist</div>
+            <div class="t-company">Utthunga Technologies · Bangalore</div>
+          </div>
+          <span class="t-date">Dec 2021 – July 2024</span>
+        </div>
+        <ul class="t-bullets">
+          <li>Formulated advanced cybersecurity strategies fortifying IT, OT, and Cloud assets — achieving a <strong style="color:var(--accent)">45% reduction</strong> in security incidents.</li>
+          <li>Conducted comprehensive risk assessments, pentest, and vulnerability scans — identifying and mitigating <strong style="color:var(--accent)">95% of potential vulnerabilities</strong>.</li>
+          <li>Led NIST, Risk Management, and threat modeling sessions to identify attack vectors and implement robust security controls.</li>
+        </ul>
+        <div class="t-badges">
+          <span class="t-badge">OT Security</span>
+          <span class="t-badge">Risk Assessment</span>
+          <span class="t-badge">NIST</span>
+          <span class="t-badge">Threat Modeling</span>
+          <span class="t-badge">Cloud Security</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="t-item reveal left">
+      <div class="t-card">
+        <div class="t-header">
+          <div>
+            <div class="t-role">Social Media Analyst — Dark Web Monitoring</div>
+            <div class="t-company">Iyanar Infotech · Chennai</div>
+          </div>
+          <span class="t-date">Mar 2021 – Aug 2021</span>
+        </div>
+        <ul class="t-bullets">
+          <li>Guaranteed stability and efficiency of IT operations, fostering cross-functional collaboration for scalable solutions.</li>
+          <li>Managed and maintained DNS infrastructure ensuring uninterrupted network service availability.</li>
+        </ul>
+        <div class="t-badges">
+          <span class="t-badge">Dark Web Monitoring</span>
+          <span class="t-badge">DNS Management</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════ SKILLS ═══════════════ -->
+<section id="skills">
+  <div class="sh reveal">
+    <div class="sh-icon">🛡️</div>
+    <h2><span class="glitch" data-text="Skills & Arsenal">Skills & Arsenal</span></h2>
+    <div class="sh-line"></div>
+  </div>
+
+  <div class="skills-layout">
+    <!-- Radar Chart -->
+    <div class="radar-wrap reveal scale">
+      <canvas id="radarCanvas" width="320" height="320"></canvas>
+      <div style="font-size:.75rem;color:var(--muted);text-align:center;letter-spacing:.08em;text-transform:uppercase">Competency Radar</div>
+    </div>
+
+    <!-- Skill Panels -->
+    <div class="skill-panels">
+      <div class="skill-panel reveal right">
+        <div class="sp-title">⚔️ Offensive Security & VAPT</div>
+        <div class="sp-tags">
+          <span class="sp-tag">Burp Suite Pro</span><span class="sp-tag">Metasploit</span>
+          <span class="sp-tag">Nmap</span><span class="sp-tag">Nessus</span>
+          <span class="sp-tag">OpenVAS</span><span class="sp-tag">Qualys</span>
+          <span class="sp-tag">OWASP ZAP</span><span class="sp-tag">Wireshark</span>
+          <span class="sp-tag">ffuf</span><span class="sp-tag">Nikto</span>
+          <span class="sp-tag">Amass</span><span class="sp-tag">Subfinder</span><span class="sp-tag">httpx</span>
+        </div>
+      </div>
+      <div class="skill-panel reveal right">
+        <div class="sp-title">☁️ Cloud & Infrastructure</div>
+        <div class="sp-tags">
+          <span class="sp-tag">AWS</span><span class="sp-tag">Azure</span>
+          <span class="sp-tag">Digital Ocean</span><span class="sp-tag">Linode</span>
+          <span class="sp-tag">Cloudflare</span><span class="sp-tag">Okta</span>
+          <span class="sp-tag">Nginx</span><span class="sp-tag">pfSense</span><span class="sp-tag">Fail2Ban</span>
+        </div>
+      </div>
+      <div class="skill-panel reveal right">
+        <div class="sp-title">🕵️ Threat Intelligence</div>
+        <div class="sp-tags">
+          <span class="sp-tag">Shodan</span><span class="sp-tag">Maltego</span>
+          <span class="sp-tag">SpiderFoot</span><span class="sp-tag">Censys</span>
+          <span class="sp-tag">VirusTotal</span><span class="sp-tag">AlienVault OTX</span>
+          <span class="sp-tag">theHarvester</span><span class="sp-tag">GreyNoise</span><span class="sp-tag">HIBP</span>
+        </div>
+      </div>
+      <div class="skill-panel reveal right">
+        <div class="sp-title">🔧 App, API & DevSecOps</div>
+        <div class="sp-tags">
+          <span class="sp-tag">Postman</span><span class="sp-tag">Akto</span>
+          <span class="sp-tag">SonarQube</span><span class="sp-tag">Black Duck</span>
+          <span class="sp-tag">Nuclei</span><span class="sp-tag">Snyk</span>
+          <span class="sp-tag">SAST/DAST/IAST</span><span class="sp-tag">Horizon3.ai</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skill Bars -->
+  <div class="skill-bars reveal" style="margin-top:2rem">
+    <div class="bar-item"><div class="bar-header"><span class="bar-name">Web Application Penetration Testing</span><span class="bar-pct">95%</span></div><div class="bar-track"><div class="bar-fill cyan" data-w="95"></div></div></div>
+    <div class="bar-item"><div class="bar-header"><span class="bar-name">AI / LLM Security</span><span class="bar-pct">90%</span></div><div class="bar-track"><div class="bar-fill purple" data-w="90"></div></div></div>
+    <div class="bar-item"><div class="bar-header"><span class="bar-name">Cloud Security (AWS / Azure)</span><span class="bar-pct">88%</span></div><div class="bar-track"><div class="bar-fill cyan" data-w="88"></div></div></div>
+    <div class="bar-item"><div class="bar-header"><span class="bar-name">Red Teaming & Threat Modeling</span><span class="bar-pct">85%</span></div><div class="bar-track"><div class="bar-fill green" data-w="85"></div></div></div>
+    <div class="bar-item"><div class="bar-header"><span class="bar-name">Source Code Review</span><span class="bar-pct">82%</span></div><div class="bar-track"><div class="bar-fill purple" data-w="82"></div></div></div>
+    <div class="bar-item"><div class="bar-header"><span class="bar-name">OT / Embedded Security</span><span class="bar-pct">75%</span></div><div class="bar-track"><div class="bar-fill green" data-w="75"></div></div></div>
+  </div>
+</section>
+
+<!-- ═══════════════ CERTIFICATIONS ═══════════════ -->
+<section id="certifications">
+  <div class="sh reveal">
+    <div class="sh-icon">🏅</div>
+    <h2><span class="glitch" data-text="Certifications">Certifications</span></h2>
+    <div class="sh-line"></div>
+  </div>
+  <p style="color:var(--muted);font-size:.8rem;margin-bottom:1.5rem;font-family:'Courier New',monospace">// Hover cards to reveal credential IDs</p>
+  <div class="certs-grid">
+
+    <div class="cert-flip reveal">
+      <div class="cert-inner">
+        <div class="cert-face">
+          <div class="cert-icon-wrap">🎓</div>
+          <div><div class="cert-name">CEH — Certified Ethical Hacker</div><div class="cert-org">EC-Council</div></div>
+        </div>
+        <div class="cert-face cert-back">
+          <div class="cert-id-label">Credential ID</div>
+          <div class="cert-id-val">ECC2691048735</div>
+          <div class="cert-org" style="margin-top:.3rem">EC-Council · Active</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cert-flip reveal">
+      <div class="cert-inner">
+        <div class="cert-face">
+          <div class="cert-icon-wrap" style="background:linear-gradient(135deg,#0078d4,#005a9e)">🔷</div>
+          <div><div class="cert-name">SC-100: Cybersecurity Architect Expert</div><div class="cert-org">Microsoft</div></div>
+        </div>
+        <div class="cert-face cert-back">
+          <div class="cert-id-label">Credential ID</div>
+          <div class="cert-id-val">1776-3128</div>
+          <div class="cert-org" style="margin-top:.3rem">Microsoft · Active</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cert-flip reveal">
+      <div class="cert-inner">
+        <div class="cert-face">
+          <div class="cert-icon-wrap" style="background:linear-gradient(135deg,#0078d4,#005a9e)">🔷</div>
+          <div><div class="cert-name">AZ-500: Azure Security Engineer</div><div class="cert-org">Microsoft</div></div>
+        </div>
+        <div class="cert-face cert-back">
+          <div class="cert-id-label">Credential ID</div>
+          <div class="cert-id-val">I694-5304</div>
+          <div class="cert-org" style="margin-top:.3rem">Microsoft · Active</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cert-flip reveal">
+      <div class="cert-inner">
+        <div class="cert-face">
+          <div class="cert-icon-wrap" style="background:linear-gradient(135deg,#0078d4,#005a9e)">🔷</div>
+          <div><div class="cert-name">SC-900: Security, Compliance & Identity</div><div class="cert-org">Microsoft</div></div>
+        </div>
+        <div class="cert-face cert-back">
+          <div class="cert-id-label">Credential ID</div>
+          <div class="cert-id-val">15028069</div>
+          <div class="cert-org" style="margin-top:.3rem">Microsoft · Active</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cert-flip reveal">
+      <div class="cert-inner">
+        <div class="cert-face">
+          <div class="cert-icon-wrap" style="background:linear-gradient(135deg,#0078d4,#005a9e)">🔷</div>
+          <div><div class="cert-name">AZ-900: Azure Fundamentals</div><div class="cert-org">Microsoft</div></div>
+        </div>
+        <div class="cert-face cert-back">
+          <div class="cert-id-label">Credential ID</div>
+          <div class="cert-id-val">993474519</div>
+          <div class="cert-org" style="margin-top:.3rem">Microsoft · Active</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cert-flip reveal">
+      <div class="cert-inner">
+        <div class="cert-face">
+          <div class="cert-icon-wrap" style="background:linear-gradient(135deg,#4285f4,#34a853)">🌐</div>
+          <div><div class="cert-name">Google Cybersecurity Specialist</div><div class="cert-org">Google</div></div>
+        </div>
+        <div class="cert-face cert-back">
+          <div class="cert-id-label">Credential ID</div>
+          <div class="cert-id-val">MZV2FJWKYSAE</div>
+          <div class="cert-org" style="margin-top:.3rem">Google · Active</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cert-flip reveal">
+      <div class="cert-inner">
+        <div class="cert-face">
+          <div class="cert-icon-wrap" style="background:linear-gradient(135deg,#f59e0b,#92400e)">⛓️</div>
+          <div><div class="cert-name">Certified Blockchain Expert</div><div class="cert-org">Blockchain Council</div></div>
+        </div>
+        <div class="cert-face cert-back">
+          <div class="cert-id-label">Credential ID</div>
+          <div class="cert-id-val">78077936</div>
+          <div class="cert-org" style="margin-top:.3rem">Blockchain Council · Active</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════ PROJECT ═══════════════ -->
+<section id="projects">
+  <div class="sh reveal">
+    <div class="sh-icon">🚀</div>
+    <h2><span class="glitch" data-text="Featured Project">Featured Project</span></h2>
+    <div class="sh-line"></div>
+  </div>
+  <div class="project-hero reveal scale">
+    <div class="project-canvas-wrap">
+      <canvas id="threatCanvas"></canvas>
+    </div>
+    <div class="project-content">
+      <div class="proj-tags">
+        <span class="proj-tag">AI · LLM</span>
+        <span class="proj-tag">Burp Suite MCP</span>
+        <span class="proj-tag">Open Source</span>
+        <span class="proj-tag">Offensive Security</span>
+      </div>
+      <h3>AI-Powered Vulnerability Assessment & Penetration Testing Framework</h3>
+      <p>Architected an AI-driven Application Security Testing framework integrating <strong style="color:var(--accent)">Anthropic Claude</strong> with <strong style="color:var(--accent)">Burp Suite Professional</strong> via <strong style="color:var(--accent)">Model Context Protocol (MCP)</strong> — enabling LLM-assisted attack-surface mapping, threat modeling, HTTP traffic analysis, vulnerability identification, exploitability assessment, and OWASP Top 10 validation.</p>
+      <p>Automated authenticated Web and API penetration testing workflows — covering endpoint/parameter discovery, business-logic testing, vulnerability correlation, risk prioritization, remediation recommendations, and automated security reporting.</p>
+      <a href="https://github.com/vikramrajkumarmajji/AI-VAPT" target="_blank" class="proj-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        github.com/vikramrajkumarmajji/AI-VAPT ↗
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ EDUCATION ═══════════════ -->
+<section id="education">
+  <div class="sh reveal">
+    <div class="sh-icon">🎓</div>
+    <h2><span class="glitch" data-text="Education">Education</span></h2>
+    <div class="sh-line"></div>
+  </div>
+  <div class="edu-grid">
+    <div class="edu-card reveal left">
+      <div class="edu-deg">Master of Technology</div>
+      <div class="edu-field">Computer Science & Engineering</div>
+      <div class="edu-school">VR Siddhartha Engineering College</div>
+      <div class="edu-meta">
+        <span class="edu-badge">2018 – 2020</span>
+        <span class="edu-badge">CGPA: 8.47</span>
+      </div>
+    </div>
+    <div class="edu-card reveal right">
+      <div class="edu-deg">Bachelor of Technology</div>
+      <div class="edu-field">Information Technology</div>
+      <div class="edu-school">VR Siddhartha Engineering College</div>
+      <div class="edu-meta">
+        <span class="edu-badge">2013 – 2017</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:3.5rem">
+    <div class="sh reveal">
+      <div class="sh-icon">📄</div>
+      <h2><span class="glitch" data-text="Publications">Publications</span></h2>
+      <div class="sh-line"></div>
+    </div>
+    <div class="pub-list">
+      <div class="pub-card reveal left">
+        <div class="pub-num">01</div>
+        <div>
+          <div class="pub-title">Blockchain-Based Distributed EHR with Confidentiality & Security using Blake2b</div>
+          <div class="pub-journal">International Journal of Recent Technology and Engineering (IJRTE) · ISSN 2277-3878 · Vol 8, Issue 6 · March 2020</div>
+        </div>
+      </div>
+      <div class="pub-card reveal right">
+        <div class="pub-num">02</div>
+        <div>
+          <div class="pub-title">Blockchain Governance in Supply Chain Market</div>
+          <div class="pub-journal">International Journal for Modern Trends in Science and Technology (IJMTST) · ISSN 2455-3778 · Vol 06, Issue 03 · March 2020</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CONTACT ═══════════════ -->
+<section id="contact">
+  <div class="sh reveal" style="justify-content:center;text-align:center;flex-direction:column;align-items:center;gap:.5rem">
+    <h2 style="font-size:clamp(1.8rem,4vw,2.5rem);font-weight:900">Get In Touch</h2>
+    <p style="color:var(--muted);font-size:.9rem;margin-top:.4rem">Open to cybersecurity roles · red team · AI security · VAPT</p>
+  </div>
+  <div class="contact-grid reveal">
+    <a href="mailto:hello.cyberdefender@gmail.com" class="c-link"><span class="c-icon">✉️</span>hello.cyberdefender@gmail.com</a>
+    <a href="tel:+918333011699" class="c-link"><span class="c-icon">📞</span>+91-8333011699</a>
+    <a href="https://linkedin.com/in/vikram-raj-kumar-majji" target="_blank" class="c-link"><span class="c-icon">🔗</span>LinkedIn Profile</a>
+    <a href="https://github.com/vikramrajkumarmajji/AI-VAPT" target="_blank" class="c-link"><span class="c-icon">💻</span>GitHub / AI-VAPT</a>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>© 2026 <span>Vikram Raj Kumar Majji</span> · Cybersecurity Specialist · Crafted with precision ⚔️</p>
+</footer>
+
+<button id="top-btn" style="display:grid" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   LOADER
+════════════════════════════════════════════════════════════ */
+const loaderMsgs = ['INITIALIZING SYSTEMS...','LOADING SECURITY MODULES...','ESTABLISHING SECURE CONNECTION...','DECRYPTING ASSETS...','ACCESS GRANTED'];
+let lmi = 0;
+const lmEl = document.getElementById('loader-msg');
+const lmInt = setInterval(() => { if(++lmi < loaderMsgs.length) lmEl.textContent = loaderMsgs[lmi]; }, 400);
+setTimeout(() => {
+  clearInterval(lmInt);
+  document.getElementById('loader').classList.add('done');
+  startTerminal();
+}, 2200);
+
+/* ════════════════════════════════════════════════════════════
+   CUSTOM CURSOR
+════════════════════════════════════════════════════════════ */
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+(function animRing(){
+  rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+})();
+
+/* ════════════════════════════════════════════════════════════
+   SPOTLIGHT
+════════════════════════════════════════════════════════════ */
+const spotlight = document.getElementById('spotlight');
+document.addEventListener('mousemove', e => {
+  spotlight.style.setProperty('--mx', e.clientX+'px');
+  spotlight.style.setProperty('--my', e.clientY+'px');
+});
+
+/* ════════════════════════════════════════════════════════════
+   MATRIX / PARTICLE BACKGROUND
+════════════════════════════════════════════════════════════ */
+(function(){
+  const c = document.getElementById('bg-canvas');
+  const ctx = c.getContext('2d');
+  let W,H,cols,drops;
+  function init(){
+    W=c.width=window.innerWidth; H=c.height=window.innerHeight;
+    cols=Math.floor(W/22); drops=Array(cols).fill(0).map(()=>Math.random()*H/20);
+  }
+  init(); window.addEventListener('resize',init);
+  const chars='01アイウエカキクサシスタチABCDEF</>{}';
+  function draw(){
+    ctx.fillStyle='rgba(4,8,16,0.055)';
+    ctx.fillRect(0,0,W,H);
+    cols && drops.forEach((y,i)=>{
+      const ch=chars[Math.floor(Math.random()*chars.length)];
+      const alpha=Math.random()*.6+.1;
+      ctx.fillStyle=`rgba(0,245,255,${alpha})`;
+      ctx.font=`${Math.random()>.9?14:12}px monospace`;
+      ctx.fillText(ch,i*22,y*22);
+      if(y*22>H && Math.random()>.975) drops[i]=0;
+      drops[i]+=Math.random()>.5?1:.5;
+    });
+  }
+  setInterval(draw,45);
+})();
+
+/* ════════════════════════════════════════════════════════════
+   HEX GRID SVG
+════════════════════════════════════════════════════════════ */
+(function(){
+  const svg = document.getElementById('hex-grid');
+  svg.style.cssText='position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none';
+  const R=30,W=Math.ceil(window.innerWidth/(R*1.7))+2,H=Math.ceil(window.innerHeight/(R*2*0.866))+2;
+  let html='';
+  for(let row=0;row<H;row++){
+    for(let col=0;col<W;col++){
+      const x=col*R*1.732+(row%2)*R*0.866;
+      const y=row*R*1.5;
+      const pts=[];
+      for(let i=0;i<6;i++){
+        const a=Math.PI/180*(60*i-30);
+        pts.push(`${x+R*.9*Math.cos(a)},${y+R*.9*Math.sin(a)}`);
+      }
+      const glow=Math.random()>.97?'rgba(0,245,255,0.25)':'rgba(0,245,255,0.04)';
+      html+=`<polygon points="${pts.join(' ')}" fill="none" stroke="${glow}" stroke-width=".5"/>`;
+    }
+  }
+  svg.innerHTML=html;
+})();
+
+/* ════════════════════════════════════════════════════════════
+   TYPING EFFECT
+════════════════════════════════════════════════════════════ */
+(function(){
+  const words=['Cybersecurity Specialist','Red Team Operator','AI / LLM Security Expert','VAPT Specialist','Cloud Security Engineer','Offensive Security Researcher'];
+  let wi=0,ci=0,del=false;
+  const el=document.getElementById('typed');
+  function tick(){
+    const w=words[wi];
+    el.textContent=del?w.slice(0,--ci):w.slice(0,++ci);
+    if(!del&&ci===w.length){del=true;setTimeout(tick,1800);return;}
+    if(del&&ci===0){del=false;wi=(wi+1)%words.length;}
+    setTimeout(tick,del?55:95);
+  }
+  tick();
+})();
+
+/* ════════════════════════════════════════════════════════════
+   TERMINAL ANIMATION
+════════════════════════════════════════════════════════════ */
+function startTerminal(){
+  const body=document.getElementById('term-body');
+  const cursor=document.getElementById('t-cur');
+  const lines=[
+    {type:'cmd',prompt:'vikram@cyberdefender:~$',text:'whoami'},
+    {type:'out',text:'Vikram Raj Kumar Majji | Senior Analyst Technology Security @ Vendavo'},
+    {type:'cmd',prompt:'vikram@cyberdefender:~$',text:'cat skills.txt'},
+    {type:'out',text:'[✓] Red Teaming  [✓] VAPT (200+ assessments)  [✓] AI/LLM Security'},
+    {type:'out',text:'[✓] Cloud Security (AWS/Azure)  [✓] Threat Intelligence  [✓] OT Security'},
+    {type:'cmd',prompt:'vikram@cyberdefender:~$',text:'ls certifications/'},
+    {type:'success',text:'CEH  SC-100  AZ-500  SC-900  AZ-900  Google-Cyber  Blockchain-Expert'},
+    {type:'cmd',prompt:'vikram@cyberdefender:~$',text:'./run_vapt.sh --target enterprise --mode ai-assisted'},
+    {type:'warn',text:'[*] Initializing AI-VAPT Framework...'},
+    {type:'warn',text:'[*] Loading Claude MCP + Burp Suite integration...'},
+    {type:'success',text:'[✓] Attack surface mapped  [✓] 47 endpoints discovered  [✓] 0 critical vulns unpatched'},
+    {type:'cmd',prompt:'vikram@cyberdefender:~$',text:'echo "Ready to defend. Ready to attack."'},
+    {type:'success',text:'Ready to defend. Ready to attack.'},
+  ];
+  let li=0,ci=0;
+  body.innerHTML='';
+  body.appendChild(cursor);
+  function nextLine(){
+    if(li>=lines.length)return;
+    const l=lines[li];
+    const row=document.createElement('div');
+    row.className='t-line';
+    row.style.animationDelay='0s';
+    if(l.type==='cmd'){
+      row.innerHTML=`<span class="t-prompt">${l.prompt}</span> `;
+      const span=document.createElement('span');
+      span.className='t-cmd';
+      row.appendChild(span);
+      body.insertBefore(row,cursor);
+      let chi=0;
+      const t=setInterval(()=>{
+        span.textContent=l.text.slice(0,++chi);
+        if(chi>=l.text.length){clearInterval(t);li++;setTimeout(nextLine,200);}
+      },55);
+    } else {
+      row.innerHTML=`<span class="t-${l.type}">${l.text}</span>`;
+      body.insertBefore(row,cursor);
+      li++; setTimeout(nextLine,120);
+    }
+  }
+  nextLine();
+}
+
+/* ════════════════════════════════════════════════════════════
+   SCROLL REVEAL
+════════════════════════════════════════════════════════════ */
+const revObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revObs.unobserve(e.target);}});
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+
+/* ════════════════════════════════════════════════════════════
+   COUNTERS
+════════════════════════════════════════════════════════════ */
+function runCounters(){
+  document.querySelectorAll('.stat-n[data-target]').forEach(el=>{
+    const target=+el.dataset.target,suffix=el.dataset.suffix||'';
+    let v=0; const step=Math.max(1,Math.ceil(target/80));
+    const t=setInterval(()=>{v=Math.min(v+step,target);el.textContent=v+suffix;if(v>=target)clearInterval(t);},20);
+  });
+}
+const heroObs=new IntersectionObserver(([e])=>{if(e.isIntersecting){runCounters();heroObs.disconnect();}},{threshold:.3});
+heroObs.observe(document.getElementById('hero'));
+
+/* ════════════════════════════════════════════════════════════
+   SKILL BARS
+════════════════════════════════════════════════════════════ */
+const barObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.bar-fill[data-w]').forEach(b=>{
+        setTimeout(()=>{b.style.width=b.dataset.w+'%';},200);
+      });
+      barObs.unobserve(e.target);
+    }
+  });
+},{threshold:.2});
+document.querySelectorAll('.skill-bars').forEach(el=>barObs.observe(el));
+
+/* ════════════════════════════════════════════════════════════
+   RADAR CHART
+════════════════════════════════════════════════════════════ */
+(function(){
+  const canvas=document.getElementById('radarCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height,cx=W/2,cy=H/2,R=110;
+  const labels=['VAPT','Red Team','AI/LLM','Cloud','Threat Intel','OT Sec'];
+  const vals=[.95,.85,.90,.88,.82,.75];
+  const N=labels.length;
+  function angle(i){return(Math.PI*2/N)*i-Math.PI/2;}
+  function pt(i,r){return{x:cx+r*Math.cos(angle(i)),y:cy+r*Math.sin(angle(i))};}
+  let progress=0;
+  function draw(p){
+    ctx.clearRect(0,0,W,H);
+    // grid rings
+    for(let ring=1;ring<=5;ring++){
+      const rr=R*ring/5;
+      ctx.beginPath();
+      for(let i=0;i<N;i++){
+        const {x,y}=pt(i,rr);
+        i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+      }
+      ctx.closePath();
+      ctx.strokeStyle=`rgba(0,245,255,${ring===5?.15:.06})`;
+      ctx.lineWidth=1;ctx.stroke();
+    }
+    // axes
+    for(let i=0;i<N;i++){
+      const {x,y}=pt(i,R);
+      ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(x,y);
+      ctx.strokeStyle='rgba(0,245,255,.1)';ctx.lineWidth=1;ctx.stroke();
+    }
+    // data fill
+    const grad=ctx.createRadialGradient(cx,cy,0,cx,cy,R);
+    grad.addColorStop(0,'rgba(0,245,255,0.25)');
+    grad.addColorStop(1,'rgba(124,58,237,0.1)');
+    ctx.beginPath();
+    for(let i=0;i<N;i++){
+      const {x,y}=pt(i,R*vals[i]*p);
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.closePath();
+    ctx.fillStyle=grad;ctx.fill();
+    ctx.strokeStyle='rgba(0,245,255,.7)';ctx.lineWidth=2;ctx.stroke();
+    // dots
+    for(let i=0;i<N;i++){
+      const {x,y}=pt(i,R*vals[i]*p);
+      ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);
+      ctx.fillStyle='#00f5ff';ctx.fill();
+      ctx.strokeStyle='var(--bg)';ctx.lineWidth=2;ctx.stroke();
+    }
+    // labels
+    ctx.font='bold 11px "Segoe UI",sans-serif';ctx.fillStyle='#94a3b8';ctx.textAlign='center';
+    for(let i=0;i<N;i++){
+      const {x,y}=pt(i,R+22);
+      ctx.fillText(labels[i],x,y+4);
+    }
+  }
+  draw(0);
+  const radarObs=new IntersectionObserver(([e])=>{
+    if(e.isIntersecting){
+      const t=setInterval(()=>{
+        progress=Math.min(progress+.025,1);
+        draw(progress);
+        if(progress>=1)clearInterval(t);
+      },16);
+      radarObs.disconnect();
+    }
+  },{threshold:.3});
+  radarObs.observe(canvas);
+})();
+
+/* ════════════════════════════════════════════════════════════
+   THREAT MAP CANVAS (project section)
+════════════════════════════════════════════════════════════ */
+(function(){
+  const c=document.getElementById('threatCanvas');
+  const ctx=c.getContext('2d');
+  function resize(){c.width=c.parentElement.offsetWidth;c.height=220;}
+  resize(); window.addEventListener('resize',resize);
+  const nodes=[];
+  const count=40;
+  for(let i=0;i<count;i++){
+    nodes.push({
+      x:Math.random()*c.width,y:Math.random()*c.height,
+      vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5,
+      r:Math.random()*3+1.5,
+      color:Math.random()>.7?'#00f5ff':Math.random()>.5?'#7c3aed':'#10b981',
+      pulse:Math.random()*Math.PI*2
+    });
+  }
+  let frame=0;
+  function draw(){
+    frame++;
+    ctx.clearRect(0,0,c.width,c.height);
+    // connections
+    for(let i=0;i<nodes.length;i++){
+      for(let j=i+1;j<nodes.length;j++){
+        const dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y;
+        const dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<130){
+          ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);
+          ctx.strokeStyle=`rgba(0,245,255,${.12*(1-dist/130)})`;ctx.lineWidth=.8;ctx.stroke();
+        }
+      }
+    }
+    // nodes
+    nodes.forEach(n=>{
+      n.pulse+=.04;
+      const glow=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r*4);
+      glow.addColorStop(0,n.color);glow.addColorStop(1,'transparent');
+      ctx.beginPath();ctx.arc(n.x,n.y,n.r*(1+.3*Math.sin(n.pulse)),0,Math.PI*2);
+      ctx.fillStyle=glow;ctx.fill();
+      ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+      ctx.fillStyle=n.color;ctx.fill();
+      n.x+=n.vx;n.y+=n.vy;
+      if(n.x<0||n.x>c.width)n.vx*=-1;
+      if(n.y<0||n.y>c.height)n.vy*=-1;
+    });
+    // moving scan line
+    const scanY=(frame*1.2)%c.height;
+    const scanGrad=ctx.createLinearGradient(0,scanY-15,0,scanY+2);
+    scanGrad.addColorStop(0,'transparent');
+    scanGrad.addColorStop(1,'rgba(0,245,255,.18)');
+    ctx.fillStyle=scanGrad;ctx.fillRect(0,scanY-15,c.width,17);
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ════════════════════════════════════════════════════════════
+   NAV PROGRESS BAR
+════════════════════════════════════════════════════════════ */
+window.addEventListener('scroll',()=>{
+  const pct=scrollY/(document.body.scrollHeight-innerHeight)*100;
+  document.getElementById('nav-progress').style.width=pct+'%';
+  document.getElementById('top-btn').style.display=scrollY>500?'grid':'none';
+});
+
+/* ════════════════════════════════════════════════════════════
+   3D TILT ON CARDS
+════════════════════════════════════════════════════════════ */
+document.querySelectorAll('.t-card,.edu-card,.skill-panel,.project-hero').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-.5;
+    const y=(e.clientY-r.top)/r.height-.5;
+    card.style.transform=`perspective(800px) rotateY(${x*8}deg) rotateX(${-y*6}deg) translateY(-4px)`;
+  });
+  card.addEventListener('mouseleave',()=>{
+    card.style.transform='';
+    card.style.transition='transform .5s cubic-bezier(.22,1,.36,1)';
+    setTimeout(()=>card.style.transition='',500);
+  });
+});
+
+/* ════════════════════════════════════════════════════════════
+   TEXT SCRAMBLE ON SECTION TITLES
+════════════════════════════════════════════════════════════ */
+(function(){
+  const GLYPH='!<>-_\\/[]{}—=+*^?#01';
+  function scramble(el){
+    const final=el.dataset.final||el.textContent.trim();
+    el.dataset.final=final;
+    let frame=0; const total=final.length*2+12;
+    const id=setInterval(()=>{
+      frame++;
+      let out='';
+      for(let i=0;i<final.length;i++){
+        if(frame/2>i) out+=final[i];
+        else out+=GLYPH[Math.floor(Math.random()*GLYPH.length)];
+      }
+      el.textContent=out;
+      if(frame>=total){clearInterval(id);el.textContent=final;}
+    },28);
+  }
+  const io=new IntersectionObserver(es=>es.forEach(e=>{
+    if(e.isIntersecting){scramble(e.target);io.unobserve(e.target);}
+  }),{threshold:.4});
+  document.querySelectorAll('h2,.section-title,.sec-title').forEach(h=>{
+    if(h.children.length===0) io.observe(h);
+  });
+})();
+
+/* ════════════════════════════════════════════════════════════
+   MAGNETIC BUTTONS & LINKS
+════════════════════════════════════════════════════════════ */
+document.querySelectorAll('button,.btn,.nav-links a,.cta,.chip,.tag').forEach(el=>{
+  el.addEventListener('mousemove',e=>{
+    const r=el.getBoundingClientRect();
+    const x=e.clientX-r.left-r.width/2, y=e.clientY-r.top-r.height/2;
+    el.style.transform=`translate(${x*.25}px, ${y*.35}px)`;
+  });
+  el.addEventListener('mouseleave',()=>{
+    el.style.transition='transform .45s cubic-bezier(.22,1,.36,1)';
+    el.style.transform='';
+    setTimeout(()=>el.style.transition='',450);
+  });
+});
+
+/* ════════════════════════════════════════════════════════════
+   CLICK SHOCKWAVE
+════════════════════════════════════════════════════════════ */
+document.addEventListener('click',e=>{
+  const w=document.createElement('span');
+  w.className='shockwave';
+  w.style.left=e.clientX+'px'; w.style.top=e.clientY+'px';
+  document.body.appendChild(w);
+  setTimeout(()=>w.remove(),700);
+});
+
+/* ════════════════════════════════════════════════════════════
+   CURSOR PARTICLE TRAIL
+════════════════════════════════════════════════════════════ */
+(function(){
+  if(matchMedia('(hover:none)').matches) return;
+  let last=0;
+  document.addEventListener('mousemove',e=>{
+    const now=performance.now();
+    if(now-last<38) return; last=now;
+    const p=document.createElement('span');
+    p.className='trail-dot';
+    p.style.left=e.clientX+'px'; p.style.top=e.clientY+'px';
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),620);
+  });
+})();
+
+/* ════════════════════════════════════════════════════════════
+   SCROLL PARALLAX + STAGGERED REVEAL
+════════════════════════════════════════════════════════════ */
+(function(){
+  const io=new IntersectionObserver(es=>es.forEach(e=>{
+    if(e.isIntersecting){
+      const kids=[...e.target.children];
+      kids.forEach((k,i)=>{k.classList.add('rise-in');k.style.animationDelay=(i*70)+'ms';});
+      io.unobserve(e.target);
+    }
+  }),{threshold:.15});
+  document.querySelectorAll('section > .container, section > div').forEach(c=>{
+    if(c.children.length>1 && c.children.length<20) io.observe(c);
+  });
+
+  const hero=document.getElementById('hero');
+  let ticking=false;
+  window.addEventListener('scroll',()=>{
+    if(ticking) return; ticking=true;
+    requestAnimationFrame(()=>{
+      if(hero && scrollY<innerHeight){
+        hero.style.transform=`translateY(${scrollY*.25}px)`;
+        hero.style.opacity=String(Math.max(0,1-scrollY/(innerHeight*.85)));
+      }
+      ticking=false;
+    });
+  },{passive:true});
+})();
+
+/* ════════════════════════════════════════════════════════════
+   MATRIX RAIN (subtle, behind everything)
+════════════════════════════════════════════════════════════ */
+(function(){
+  const c=document.createElement('canvas');
+  c.id='matrix-rain'; document.body.appendChild(c);
+  const x=c.getContext('2d');
+  let cols,drops;
+  const chars='01ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿ<>/{}[]#$&@';
+  function size(){
+    c.width=innerWidth; c.height=innerHeight;
+    cols=Math.floor(c.width/18); drops=Array(cols).fill(0).map(()=>Math.random()*-100);
+  }
+  size(); addEventListener('resize',size);
+  (function loop(){
+    x.fillStyle='rgba(4,8,16,.09)'; x.fillRect(0,0,c.width,c.height);
+    x.font='13px monospace';
+    for(let i=0;i<cols;i++){
+      x.fillStyle=Math.random()>.98?'rgba(124,58,237,.55)':'rgba(0,245,255,.35)';
+      x.fillText(chars[Math.floor(Math.random()*chars.length)],i*18,drops[i]*18);
+      if(drops[i]*18>c.height && Math.random()>.975) drops[i]=0;
+      drops[i]+=.55;
+    }
+    setTimeout(()=>requestAnimationFrame(loop),55);
+  })();
+})();
+
+/* ════════════════════════════════════════════════════════════
+   CARD GLOW FOLLOWS POINTER
+════════════════════════════════════════════════════════════ */
+document.querySelectorAll('.t-card,.edu-card,.skill-panel,.project-hero,.cert-card,.card').forEach(card=>{
+  card.classList.add('glow-card');
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    card.style.setProperty('--gx',(e.clientX-r.left)+'px');
+    card.style.setProperty('--gy',(e.clientY-r.top)+'px');
+  });
+});
+</script>
+
+<style>
+.shockwave{position:fixed;width:8px;height:8px;border:2px solid var(--accent);border-radius:50%;
+  pointer-events:none;z-index:9997;transform:translate(-50%,-50%);animation:shock .7s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes shock{to{width:220px;height:220px;opacity:0;border-color:var(--accent2)}}
+
+.trail-dot{position:fixed;width:5px;height:5px;border-radius:50%;background:var(--accent);
+  pointer-events:none;z-index:9996;transform:translate(-50%,-50%);opacity:.6;
+  animation:trailfade .62s ease-out forwards;box-shadow:0 0 10px rgba(0,245,255,.7)}
+@keyframes trailfade{to{opacity:0;transform:translate(-50%,-50%) scale(.2)}}
+
+.rise-in{animation:riseIn .8s cubic-bezier(.22,1,.36,1) both}
+@keyframes riseIn{from{opacity:0;transform:translateY(30px) scale(.98);filter:blur(6px)}
+  to{opacity:1;transform:none;filter:blur(0)}}
+
+#matrix-rain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.16;mix-blend-mode:screen}
+
+.glow-card{position:relative;overflow:hidden}
+.glow-card::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;
+  transition:opacity .35s;background:radial-gradient(220px circle at var(--gx,50%) var(--gy,50%),
+  rgba(0,245,255,.13),transparent 65%)}
+.glow-card:hover::after{opacity:1}
+
+@media (prefers-reduced-motion:reduce){
+  .rise-in,.shockwave,.trail-dot{animation:none!important}
+  #matrix-rain{display:none}
+}
+</style>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   INTERACTIVE WEBGL SECURITY CORE — dependency-free 3D
+═══════════════════════════════════════════════════════════ */
+(function(){
+  const canvas=document.getElementById('cyber-scene');
+  if(!canvas)return;
+  const gl=canvas.getContext('webgl',{alpha:true,antialias:true,premultipliedAlpha:false});
+  if(!gl){canvas.style.display='none';return;}
+  const vertex=`attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}`;
+  const fragment=`precision highp float;
+  uniform vec2 r,m;uniform float t,s;
+  #define PI 3.14159265359
+  mat2 rot(float a){float c=cos(a),q=sin(a);return mat2(c,-q,q,c);}
+  float line(float x,float w){return 1.-smoothstep(w,w+1.2/floor(min(r.x,r.y)),abs(x));}
+  float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+  void main(){
+    vec2 uv=(gl_FragCoord.xy-.5*r)/min(r.x,r.y);uv.x-=.08;
+    vec2 mouse=(m-.5)*vec2(.7,.42);
+    vec3 ro=vec3(0.,0.,3.35);vec3 rd=normalize(vec3(uv*1.65,-2.15));
+    rd.yz*=rot(mouse.y);rd.xz*=rot(-mouse.x);
+    vec3 col=vec3(0.);
+    vec2 cell=floor(gl_FragCoord.xy/3.);float star=step(.9975,hash(cell));
+    col+=star*vec3(.05,.5,.7)*(0.3+0.7*sin(t*1.8+hash(cell)*12.));
+    float b=dot(ro,rd);float c=dot(ro,ro)-1.;float h=b*b-c;
+    if(h>0.){
+      float d=-b-sqrt(h);vec3 p=ro+rd*d;
+      p.xz*=rot(t*.12+s*.55);p.yz*=rot(.16*sin(t*.2));
+      float lon=abs(sin(atan(p.z,p.x)*10.));
+      float lat=abs(sin(asin(clamp(p.y,-1.,1.))*12.));
+      float grid=pow(1.-min(lon,lat),18.);
+      float fres=pow(1.-max(0.,dot(normalize(p),-rd)),2.4);
+      float scan=pow(max(0.,1.-abs(p.y-sin(t*.65)*.55)*9.),2.);
+      vec3 cyan=vec3(0.,.96,1.),violet=vec3(.48,.23,.93),green=vec3(.06,.72,.5);
+      col+=(grid*.62+fres*.68)*mix(cyan,violet,.32+.35*p.y);
+      col+=scan*green*.8;
+      float core=pow(max(0.,dot(normalize(p),normalize(vec3(-.3,.4,1.)))),22.);
+      col+=core*cyan*1.8;
+    }
+    float ring=abs(length(uv*vec2(1.,1.8))-.78);
+    col+=line(ring,.0025)*vec3(0.,.65,.82)*.34;
+    float ring2=abs(length((uv+vec2(.02,.02))*vec2(1.5,1.))-.72);
+    col+=line(ring2,.002)*vec3(.5,.2,1.)*.28;
+    float sweep=atan(uv.y,uv.x)+PI;float beam=pow(max(0.,cos(sweep-t*.32)),120.);
+    col+=beam*vec3(0.,.9,1.)*.24/(.15+length(uv));
+    col*=smoothstep(1.35,.15,length(uv));
+    gl_FragColor=vec4(col,min(1.,length(col)*1.8));
+  }`;
+  function shader(type,source){const sh=gl.createShader(type);gl.shaderSource(sh,source);gl.compileShader(sh);if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS)){console.warn('3D shader unavailable');return null}return sh}
+  const vs=shader(gl.VERTEX_SHADER,vertex),fs=shader(gl.FRAGMENT_SHADER,fragment);if(!vs||!fs)return;
+  const program=gl.createProgram();gl.attachShader(program,vs);gl.attachShader(program,fs);gl.linkProgram(program);gl.useProgram(program);
+  const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);
+  const pos=gl.getAttribLocation(program,'p');gl.enableVertexAttribArray(pos);gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0);
+  const ur=gl.getUniformLocation(program,'r'),um=gl.getUniformLocation(program,'m'),ut=gl.getUniformLocation(program,'t'),us=gl.getUniformLocation(program,'s');
+  let targetX=.5,targetY=.5,px=.5,py=.5,scroll=0,frame=0,reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function pointer(e){const rect=canvas.getBoundingClientRect();targetX=Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width));targetY=Math.max(0,Math.min(1,1-(e.clientY-rect.top)/rect.height));}
+  canvas.addEventListener('pointermove',pointer,{passive:true});canvas.addEventListener('pointerleave',()=>{targetX=.5;targetY=.5});
+  addEventListener('scroll',()=>{scroll=scrollY/Math.max(1,innerHeight)},{passive:true});
+  function resize(){const d=Math.min(devicePixelRatio||1,1.6),w=Math.floor(canvas.clientWidth*d),h=Math.floor(canvas.clientHeight*d);if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h)}}
+  const nodes=[...document.querySelectorAll('.orbit-node')];
+  function draw(now){resize();px+=(targetX-px)*.035;py+=(targetY-py)*.035;gl.uniform2f(ur,canvas.width,canvas.height);gl.uniform2f(um,px,py);gl.uniform1f(ut,reduced?3:now*.001);gl.uniform1f(us,scroll);gl.drawArrays(gl.TRIANGLES,0,6);
+    const rect=canvas.getBoundingClientRect(),cx=rect.left+rect.width*.54,cy=rect.top+rect.height*.53,rx=Math.min(rect.width,rect.height)*.31,ry=rx*.48;
+    nodes.forEach((node,i)=>{const a=(reduced?i*1.57:now*.00016*(i%2?1:-1))+i*1.57;const z=Math.sin(a),x=Math.cos(a)*rx,y=Math.sin(a)*ry*.72+(i-1.5)*18;node.style.transform=`translate3d(${cx+x}px,${cy+y}px,0) scale(${.72+(z+1)*.24})`;node.style.opacity=String(.3+(z+1)*.34)});
+    if(!reduced)frame=requestAnimationFrame(draw)
+  }
+  frame=requestAnimationFrame(draw);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!reduced){cancelAnimationFrame(frame);frame=requestAnimationFrame(draw)}});
+
+  const tiltTargets=document.querySelectorAll('.t-card,.skill-panel,.radar-wrap,.cert-card,.project-hero,.edu-card,.pub-card,.terminal-wrap');
+  if(matchMedia('(hover:hover)').matches&&!reduced){tiltTargets.forEach(card=>{card.addEventListener('pointermove',e=>{const b=card.getBoundingClientRect(),x=(e.clientX-b.left)/b.width-.5,y=(e.clientY-b.top)/b.height-.5;card.style.transform=`perspective(1000px) rotateX(${-y*4}deg) rotateY(${x*5}deg) translateY(-3px)`});card.addEventListener('pointerleave',()=>{card.style.transform=''})})}
+})();
+</script>
+
+</body>
+</html>
+
