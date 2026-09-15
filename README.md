@@ -1,1 +1,0 @@
-# vikramrajkumarmajji.github.io
